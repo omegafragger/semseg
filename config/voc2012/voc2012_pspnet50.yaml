@@ -1,7 +1,7 @@
 DATA:
   data_root: dataset/voc2012
-  train_list: dataset/voc2012/list/train_aug.txt
-  val_list: dataset/voc2012/list/val.txt
+  train_list: dataset/voc2012/list/trainaug.txt
+  val_list: dataset/voc2012/list/valaug.txt
   classes: 21
 
 TRAIN:
@@ -17,9 +17,9 @@ TRAIN:
   zoom_factor: 8  # zoom factor for final prediction during training, be in [1, 2, 4, 8]
   ignore_label: 255
   aux_weight: 0.4
-  train_gpu: [0, 1, 2, 3, 4, 5, 6, 7]
-  workers: 16  # data loader workers
-  batch_size: 16  # batch size for training
+  train_gpu: [0,1,2,3]
+  workers: 8  # data loader workers
+  batch_size: 8  # batch size for training
   batch_size_val: 8  # batch size for validation during training, memory and speed tradeoff
   base_lr: 0.01
   epochs: 50
@@ -46,7 +46,7 @@ Distributed:
   loss_scale:
 
 TEST:
-  test_list: dataset/voc2012/list/val.txt
+  test_list: dataset/voc2012/list/valaug.txt
   split: val  # split in [train, val and test]
   base_size: 512  # based size for scaling
   test_h: 473

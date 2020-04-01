@@ -1,8 +1,8 @@
 import os
 import os.path
-import cv2
 import numpy as np
 
+from PIL import Image
 from torch.utils.data import Dataset
 
 
@@ -60,12 +60,16 @@ class SemData(Dataset):
 
     def __getitem__(self, index):
         image_path, label_path = self.data_list[index]
-        image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # BGR 3 channel ndarray wiht shape H * W * 3
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # convert cv2 read image from BGR order to RGB order
-        image = np.float32(image)
-        label = cv2.imread(label_path, cv2.IMREAD_GRAYSCALE)  # GRAY 1 channel ndarray with shape H * W
-        if image.shape[0] != label.shape[0] or image.shape[1] != label.shape[1]:
+        #image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # BGR 3 channel ndarray wiht shape H * W * 3
+        image = Image.open(image_path).convert('RGB')
+        #image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # convert cv2 read image from BGR order to RGB order
+        #image = np.float32(image)
+        label = Image.open(label_path)
+        #label = cv2.imread(label_path, cv2.IMREAD_GRAYSCALE)  # GRAY 1 channel ndarray with shape H * W
+        if image.size[0] != label.size[0] or image.size[1] != label.size[1]:
             raise (RuntimeError("Image & label shape mismatch: " + image_path + " " + label_path + "\n"))
+        image = np.array(image)
+        label = np.array(label)
         if self.transform is not None:
             image, label = self.transform(image, label)
         return image, label

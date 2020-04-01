@@ -1,7 +1,6 @@
 import os
 import random
 import time
-import cv2
 import numpy as np
 import logging
 import argparse
@@ -20,9 +19,6 @@ from tensorboardX import SummaryWriter
 
 from util import dataset, transform, config
 from util.util import AverageMeter, poly_learning_rate, intersectionAndUnionGPU
-
-cv2.ocl.setUseOpenCL(False)
-cv2.setNumThreads(0)
 
 
 def get_parser():
@@ -85,11 +81,11 @@ def main():
     check(args)
     os.environ["CUDA_VISIBLE_DEVICES"] = ','.join(str(x) for x in args.train_gpu)
     if args.manual_seed is not None:
-    	random.seed(args.manual_seed)
-    	np.random.seed(args.manual_seed)
-    	torch.manual_seed(manualSeed)
-    	torch.cuda.manual_seed(manualSeed)
-    	torch.cuda.manual_seed_all(manualSeed)
+        random.seed(args.manual_seed)
+        np.random.seed(args.manual_seed)
+        torch.manual_seed(manualSeed)
+        torch.cuda.manual_seed(manualSeed)
+        torch.cuda.manual_seed_all(manualSeed)
         cudnn.benchmark = False
         cudnn.deterministic = True
     if args.dist_url == "env://" and args.world_size == -1:
